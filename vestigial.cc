@@ -4,44 +4,64 @@
 #include <vector>
 using namespace std;
 
-class Sample {
-public:
-	~Sample(){
-		cout << name << " died " << endl;
-	};
-	void what() {
-		cout << name << " hat" << endl;
-	}
-	Sample() {};
-private:
-	Sample(const string n) {
-		name = n;
-	};
-	friend class SampleOwner;
-	string name;
-};
-
-
-class SampleOwner {
-public:
-	static Sample* createSample(const string n) {
-		return new Sample(n);
-	}
-};
-
-class ExtraSample : Sample {
+class gorgeous {
 public:
 private:
-	ExtraSample() {};
+};
+
+class parent {
+public:
+	~parent() {
+		cout << m_name << endl;
+	}
+	parent(const string name) {
+		m_name = name;
+	};
+	string get_name() const {
+		getCounter++;
+		return m_name;
+	}
+private:
+	string m_name;
+	mutable int getCounter = 0; 
+};
+
+class childA : parent {
+public:
+	~childA() {
+		cout << this->get_name() << "child" << endl;
+	}
+private:
+	friend class factory;
+	childA(const string name) : parent(name) {}
+};
+
+class childB : parent {
+public:
+	~childB() {
+		cout << this->get_name();
+	}
+
+private:
+	friend class factory;
+	childB(const string name) : parent(name) {}
+};
+
+class factory {
+public:
+	childA* createChildA(const string name) {
+		return new childA(name);
+	}
+	childB* createChildB(const string name) {
+		return new childB(name);
+	}
 };
 
 int main(int argc, char const *argv[])
 {
 	cout << "suppose I work\n";
-	unique_ptr<Sample> s(SampleOwner::createSample("a"));
-	unique_ptr<Sample> s2(SampleOwner::createSample("b"));
-	s.reset(SampleOwner::createSample("c"));
-	s.swap(s2);
+	factory f;
+	unique_ptr<childA> p (f.createChildA("ben"));
 	/* code */
 	return 0;
 }
