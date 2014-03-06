@@ -1,4 +1,4 @@
 make:
-	g++ *.cc *.h -o  vest
+	g++ *.cc -o  vest
 clean:
 	rm vest
