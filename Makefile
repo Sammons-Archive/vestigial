@@ -1,4 +1,4 @@
 make:
-	g++ *.cc -o  vest
+	g++ -std=c++11 *.cc -o  vest
 clean:
 	rm vest
